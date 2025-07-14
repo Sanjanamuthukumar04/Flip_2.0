@@ -101,41 +101,37 @@ export default function HomePage() {
       <div style={styles.header}>
         <h1 style={styles.title}>Welcome to Flip!</h1>
 
-        <div style={styles.searchInline}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search books..."
-          style={styles.inputLarge}
-        />
-          <button onClick={handleSearch} style={styles.buttonSmall}>
-            Search
+        <div style={styles.headerRight}>
+          <div style={styles.searchInline}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search books..."
+              style={styles.input}
+            />
+            <button onClick={handleSearch} style={styles.buttonSmall}>
+              Search
+            </button>
+          </div>
+
+          <button onClick={() => navigate('/account')} style={styles.accountButton}>
+            My Account
           </button>
         </div>
-
-        <button onClick={() => navigate('/account')} style={styles.accountButton}>
-          My Account
-        </button>
       </div>
 
-      {/* Clear/Return buttons if needed */}
       {showSearchResults && (
-        <div style={styles.buttonsGroup}>
-          <button
-            onClick={handleClearSearch}
-            style={{ ...styles.button, backgroundColor: '#6c757d' }}
-          >
-            Clear
-          </button>
-          <button
-            onClick={handleClearSearch}
-            style={{ ...styles.button, backgroundColor: '#28a745' }}
-          >
-            Return Home
-          </button>
-        </div>
-      )}
+  <div style={styles.buttonsGroup}>
+    <button
+      onClick={handleClearSearch}
+      style={{ ...styles.button, backgroundColor: '#6c757d' }}
+    >
+      Clear
+    </button>
+  </div>
+)}
+
 
       {!showSearchResults && (
         <>
@@ -151,8 +147,10 @@ export default function HomePage() {
               marginTop: '30px'
             }}
           >
-            <span  style={{fontSize:'30px'}}> Get personalized book recommendations
-            <br /> with <span style={{fontWeight: 'bold', fontSize:'30px' }}>Flipper</span>, our AI pal!</span>
+            <span style={{ fontSize: '1.2rem' }}>
+              Get personalized book recommendations
+              <br /> with <span style={{ fontWeight: 'bold' }}>Flipper</span>, our AI pal!
+            </span>
           </button>
         </>
       )}
@@ -180,23 +178,32 @@ const styles = {
   },
   header: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
+    gap: '10px',
     marginBottom: '20px',
+  },
+  headerRight: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
     gap: '10px',
   },
   title: {
     fontSize: '2rem',
+    marginBottom: '10px',
   },
   searchInline: {
     display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
+    gap: '5px',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
-  inputLarge: {
-    padding: '10px',
+  input: {
+    padding: '8px',
     fontSize: '1rem',
-    width: '400px',
+    width: '250px',
+    maxWidth: '90%',
     borderRadius: '4px',
     border: '1px solid #ccc',
   },
@@ -210,7 +217,7 @@ const styles = {
     cursor: 'pointer',
   },
   accountButton: {
-    padding: '8px 15px',
+    padding: '8px 12px',
     fontSize: '1rem',
     borderRadius: '4px',
     border: 'none',
@@ -223,6 +230,7 @@ const styles = {
     justifyContent: 'center',
     gap: '10px',
     margin: '20px 0',
+    flexWrap: 'wrap',
   },
   button: {
     padding: '10px 20px',
@@ -251,4 +259,4 @@ const styles = {
     width: '150px',
     textAlign: 'center',
   },
-};  
+};
