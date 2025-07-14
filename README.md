@@ -25,7 +25,7 @@ Welcome to **Flip**, a full-stack web application that allows users to **rate, r
     * Theme
   * If not, enter your favorite book title and get **1 smart recommendation**
 * 🧹 **Bulk Delete** – Delete all your reviews at once if you want to start fresh
-* 🐬 **Flipper the AI Pal** – A lively mascot that guides users with responsive messages
+* 🐛 **Flipper the AI Pal** – A lively mascot that guides users with responsive messages
 * 🧾 **Review Display** – See **your own reviews and ratings** alongside those from other users, with yours always at the top
 
 ---
