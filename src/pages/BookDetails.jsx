@@ -12,8 +12,6 @@ export default function BookDetails() {
   const [currentUser, setCurrentUser] = useState(null);
   const [userProfiles, setUserProfiles] = useState({});
 
-  const whimsicalFont = `"Gloria Hallelujah", cursive`;
-
   useEffect(() => {
     (async () => {
       const { data } = await supabase.auth.getUser();
@@ -119,69 +117,36 @@ export default function BookDetails() {
     : 0;
 
   return (
-    <div
-      style={{
-        padding: '40px',
-        maxWidth: '900px',
-        margin: '0 auto',
-        fontFamily: whimsicalFont,
-      }}
-    >
-      <h1
-        style={{
-          fontSize: '2.5rem',
-          marginBottom: '10px',
-          textAlign: 'center',
-        }}
-      >
+    <div style={{ padding: '40px', maxWidth: '900px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <h1 style={{ fontSize: '2.5rem', marginBottom: '10px', textAlign: 'center' }}>
         {info.title}
       </h1>
-      <p
-        style={{
-          color: '#666',
-          marginBottom: '30px',
-          textAlign: 'center',
-        }}
-      >
+      <p style={{ color: '#666', marginBottom: '30px', textAlign: 'center' }}>
         {info.authors?.join(', ')}
       </p>
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '20px',
-          marginBottom: '30px',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}
-      >
+      <div style={{
+        display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '30px',
+        alignItems: 'center', textAlign: 'center'
+      }}>
         <img
           src={info.imageLinks?.thumbnail}
           alt={info.title}
           style={{
-            maxWidth: '220px',
-            width: '100%',
-            height: 'auto',
-            borderRadius: '6px',
-            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+            maxWidth: '220px', width: '100%', height: 'auto',
+            borderRadius: '6px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
           }}
         />
 
         <div style={{ maxWidth: '600px', textAlign: 'center' }}>
-          <Rating value={averageRating} count={reviews.length} />
-          <div
-            style={{
-              marginTop: '20px',
-              lineHeight: '1.6',
-              color: '#444',
-              textAlign: 'left',
-            }}
-            dangerouslySetInnerHTML={{
-              __html: info.description || 'No description available.',
-            }}
-          />
-        </div>
+  <Rating value={averageRating} count={reviews.length} />
+  <div
+    style={{ marginTop: '20px', lineHeight: '1.6', color: '#444', textAlign: 'left' }}
+    dangerouslySetInnerHTML={{
+      __html: info.description || 'No description available.',
+    }}
+  />
+</div>
       </div>
 
       <h2 style={{ marginTop: '40px', color: '#333' }}>Leave a Review</h2>
@@ -195,7 +160,7 @@ export default function BookDetails() {
           ...r,
           username: userProfiles[r.user_email] || r.user_email.split('@')[0],
           canDelete: currentUser && r.user_email === currentUser.email,
-          rating: r.rating || 0,
+          rating: r.rating || 0
         }))}
         onDelete={handleDeleteReview}
       />
