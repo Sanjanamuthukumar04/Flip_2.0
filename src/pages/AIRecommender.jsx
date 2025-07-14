@@ -253,7 +253,7 @@ export default function AIRecommender() {
             Uh-oh! You need to leave at least 2 reviews so we can understand your taste.
           </p>
           <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>
-            But don’t worry — enter your favorite book below and I’ll recommend one!
+            But don’t worry — you can either < br/>Come back after leaving 2 or more reviews < br/>OR < br/> Enter your favorite book below and I’ll give ONE recommendation!
           </p>
 
           <input
