@@ -18,12 +18,14 @@ export default function LoginPage() {
 
     try {
       if (isRegister) {
+        // Register
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
 
+        // Insert into `users` table
         if (data.user) {
           const username = email.split('@')[0];
           const { error: insertError } = await supabase.from('users').insert([
@@ -39,6 +41,7 @@ export default function LoginPage() {
 
         alert('Registration successful! Please check your email to verify.');
       } else {
+        // Login
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -103,15 +106,13 @@ export default function LoginPage() {
   );
 }
 
-const whimsicalFont = `"Gloria Hallelujah", cursive`;
-
 const styles = {
   container: {
     maxWidth: '400px',
     margin: '80px auto',
     padding: '20px',
     textAlign: 'center',
-    fontFamily: whimsicalFont,
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     border: '1px solid #ddd',
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
@@ -120,33 +121,28 @@ const styles = {
     fontWeight: 'bold',
     fontSize: '3rem',
     marginBottom: '0',
-    fontFamily: whimsicalFont,
   },
   subtitle: {
     fontSize: '1.2rem',
     color: '#666',
     marginTop: '4px',
     marginBottom: '20px',
-    fontFamily: whimsicalFont,
   },
   message: {
     marginBottom: '20px',
     fontSize: '1rem',
     color: '#333',
-    fontFamily: whimsicalFont,
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
     gap: '15px',
-    fontFamily: whimsicalFont,
   },
   label: {
     textAlign: 'left',
     fontWeight: '600',
     fontSize: '1rem',
     color: '#333',
-    fontFamily: whimsicalFont,
   },
   input: {
     width: '100%',
@@ -156,7 +152,6 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     boxSizing: 'border-box',
-    fontFamily: whimsicalFont,
   },
   button: {
     padding: '12px',
@@ -167,6 +162,5 @@ const styles = {
     fontWeight: 'bold',
     fontSize: '1.1rem',
     cursor: 'pointer',
-    fontFamily: whimsicalFont,
   },
-};
+}; 
