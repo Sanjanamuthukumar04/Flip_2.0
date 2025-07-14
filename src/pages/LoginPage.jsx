@@ -97,7 +97,7 @@ export default function LoginPage() {
           marginTop: '10px',
         }}
       >
-        {isRegister ? 'Switch to Login' : 'Switch to Register'}
+        {isRegister ? 'Have an account? Login!' : 'New to Flip? Sign up!'}
       </button>
     </div>
   );
