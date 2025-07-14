@@ -170,9 +170,18 @@ export default function AIRecommender() {
   };
 
 return (
-  <div style={{ textAlign: 'center', padding: '40px', fontFamily: 'sans-serif' }}>
-    {/* Header with dynamic image */}
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '30px' }}>
+  <div style={{ textAlign: 'center', padding: '20px', fontFamily: 'sans-serif', maxWidth: '1000px', margin: '0 auto' }}>
+    {/* Header */}
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '20px',
+        marginBottom: '30px',
+      }}
+    >
       <img
         src={
           (recommendations.length > 0 || fallbackRec)
@@ -182,20 +191,19 @@ return (
             : '/pics/flipper1.jpg'
         }
         alt="Flipper"
-        style={{ width: '250px', marginRight: '75px', borderRadius: '8px' }}
+        style={{ width: '200px', borderRadius: '8px' }}
       />
-      <div>
-        <h1 style={{ fontSize: '3rem', margin: 0 }}>
+      <div style={{ maxWidth: '500px' }}>
+        <h1 style={{ fontSize: '2.5rem', margin: 0 }}>
           Hi, I’m <span style={{ color: '#007bff' }}>Flipper</span>!
         </h1>
-        <p style={{ fontSize: '1.2rem', color: '#444' }}>Your personal AI book buddy!</p>
+        <p style={{ fontSize: '1rem', color: '#444' }}>Your personal AI book buddy!</p>
       </div>
     </div>
 
-    {/* Recommendations section */}
     {!showFallback && (
       <>
-        <p style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#444' }}>
+        <p style={{ fontSize: '1.2rem', marginBottom: '20px', color: '#444' }}>
           Based on your <strong>2 highest-rated books</strong> from recent reviews,<br />
           here are <strong>5 AI-powered recommendations</strong> just for you.
         </p>
@@ -204,8 +212,8 @@ return (
           onClick={fetchRecommendations}
           disabled={loading}
           style={{
-            padding: '12px 25px',
-            fontSize: '1.1rem',
+            padding: '12px 20px',
+            fontSize: '1rem',
             backgroundColor: '#007bff',
             color: 'white',
             border: 'none',
@@ -223,7 +231,7 @@ return (
               key={book.id}
               onClick={() => navigate(`/book/${book.id}`)}
               style={{
-                width: '160px',
+                width: '150px',
                 cursor: 'pointer',
                 border: '1px solid #ddd',
                 padding: '10px',
@@ -236,26 +244,21 @@ return (
                 alt={book.volumeInfo?.title}
                 style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
               />
-              <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{book.volumeInfo?.title}</p>
-              <p style={{ fontSize: '0.9rem', color: '#666' }}>{book.volumeInfo?.authors?.join(', ')}</p>
+              <p style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{book.volumeInfo?.title}</p>
+              <p style={{ fontSize: '0.85rem', color: '#666' }}>{book.volumeInfo?.authors?.join(', ')}</p>
             </div>
           ))}
         </div>
       </>
     )}
 
-    {/* Fallback section */}
     {showFallback && (
-      <div style={{ marginTop: '30px' }}>
-        <p style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '10px' }}>
+      <div style={{ marginTop: '30px', maxWidth: '700px', marginInline: 'auto' }}>
+        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '10px' }}>
           Uh-oh! You need to leave at least 2 reviews so we can understand your taste.
         </p>
-        <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>
-          But don’t worry, you can either < br/>Come back after leaving 2 or more reviews
-          < br/>
-        < br/>OR
-        < br/>
-        < br/>you enter your favorite book below and I’ll give you ONE recommendation!
+        <p style={{ fontSize: '1rem', marginBottom: '20px' }}>
+          But don’t worry — enter your favorite book below and I’ll give you ONE recommendation!
         </p>
 
         <input
@@ -264,9 +267,10 @@ return (
           value={favoriteBook}
           onChange={e => setFavoriteBook(e.target.value)}
           style={{
-            fontSize: '1.1rem',
-            padding: '10px',
-            width: '60%',
+            fontSize: '1rem',
+            padding: '8px',
+            width: '90%',
+            maxWidth: '400px',
             margin: '10px auto',
             display: 'block',
           }}
@@ -276,7 +280,7 @@ return (
           onClick={handleFavoriteSubmit}
           disabled={loading || !favoriteBook.trim()}
           style={{
-            padding: '10px 20px',
+            padding: '8px 16px',
             fontSize: '1rem',
             marginTop: '10px',
             backgroundColor: '#17a2b8',
@@ -295,7 +299,7 @@ return (
             <div
               onClick={() => navigate(`/book/${fallbackRec.id}`)}
               style={{
-                width: '160px',
+                width: '150px',
                 margin: '0 auto',
                 cursor: 'pointer',
                 border: '1px solid #ddd',
@@ -309,8 +313,8 @@ return (
                 alt={fallbackRec.volumeInfo?.title}
                 style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
               />
-              <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{fallbackRec.volumeInfo?.title}</p>
-              <p style={{ fontSize: '0.9rem', color: '#666' }}>
+              <p style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{fallbackRec.volumeInfo?.title}</p>
+              <p style={{ fontSize: '0.85rem', color: '#666' }}>
                 {fallbackRec.volumeInfo?.authors?.join(', ')}
               </p>
             </div>
@@ -320,5 +324,4 @@ return (
     )}
   </div>
 );
-
 }
