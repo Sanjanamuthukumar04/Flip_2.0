@@ -13,8 +13,6 @@ export default function AIRecommender() {
 
   const navigate = useNavigate();
 
-  const whimsicalFont = `"Gloria Hallelujah", cursive`;
-
   const fetchRecommendations = async () => {
     setLoading(true);
 
@@ -171,154 +169,156 @@ export default function AIRecommender() {
     setLoading(false);
   };
 
-  return (
-    <div style={{ textAlign: 'center', padding: '40px', fontFamily: whimsicalFont }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '30px' }}>
-        <img
-          src={
-            (recommendations.length > 0 || fallbackRec)
-              ? '/pics/flipper2.jpg'
-              : showFallback
-              ? '/pics/flipper3.jpg'
-              : '/pics/flipper1.jpg'
-          }
-          alt="Flipper"
-          style={{ width: '250px', marginRight: '75px', borderRadius: '8px' }}
-        />
-        <div>
-          <h1 style={{ fontSize: '3rem', margin: 0 }}>
-            Hi, I’m <span style={{ color: '#007bff' }}>Flipper</span>!
-          </h1>
-          <p style={{ fontSize: '1.2rem', color: '#444' }}>Your personal AI book buddy!</p>
-        </div>
+return (
+  <div style={{ textAlign: 'center', padding: '40px', fontFamily: 'sans-serif' }}>
+    {/* Header with dynamic image */}
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '30px' }}>
+      <img
+        src={
+          (recommendations.length > 0 || fallbackRec)
+            ? '/pics/flipper2.jpg'
+            : showFallback
+            ? '/pics/flipper3.jpg'
+            : '/pics/flipper1.jpg'
+        }
+        alt="Flipper"
+        style={{ width: '250px', marginRight: '75px', borderRadius: '8px' }}
+      />
+      <div>
+        <h1 style={{ fontSize: '3rem', margin: 0 }}>
+          Hi, I’m <span style={{ color: '#007bff' }}>Flipper</span>!
+        </h1>
+        <p style={{ fontSize: '1.2rem', color: '#444' }}>Your personal AI book buddy!</p>
       </div>
-
-      {!showFallback && (
-        <>
-          <p style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#444' }}>
-            Based on your <strong>2 highest-rated books</strong> from recent reviews,<br />
-            here are <strong>5 AI-powered recommendations</strong> just for you.
-          </p>
-
-          <button
-            onClick={fetchRecommendations}
-            disabled={loading}
-            style={{
-              padding: '12px 25px',
-              fontSize: '1.1rem',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              marginBottom: '30px',
-              fontFamily: whimsicalFont,
-            }}
-          >
-            {loading ? 'Fetching…' : 'Get Recommendations'}
-          </button>
-
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
-            {recommendations.map(book => (
-              <div
-                key={book.id}
-                onClick={() => navigate(`/book/${book.id}`)}
-                style={{
-                  width: '160px',
-                  cursor: 'pointer',
-                  border: '1px solid #ddd',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  textAlign: 'center',
-                  fontFamily: whimsicalFont,
-                }}
-              >
-                <img
-                  src={book.volumeInfo?.imageLinks?.thumbnail}
-                  alt={book.volumeInfo?.title}
-                  style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
-                />
-                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{book.volumeInfo?.title}</p>
-                <p style={{ fontSize: '0.9rem', color: '#666' }}>{book.volumeInfo?.authors?.join(', ')}</p>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {showFallback && (
-        <div style={{ marginTop: '30px' }}>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '10px' }}>
-            Uh-oh! You need to leave at least 2 reviews so we can understand your taste.
-          </p>
-          <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>
-            But don’t worry — you can either < br/>Come back after leaving 2 or more reviews < br/>OR < br/> Enter your favorite book below and I’ll give ONE recommendation!
-          </p>
-
-          <input
-            type="text"
-            placeholder="Enter your favorite book"
-            value={favoriteBook}
-            onChange={e => setFavoriteBook(e.target.value)}
-            style={{
-              fontSize: '1.1rem',
-              padding: '10px',
-              width: '60%',
-              margin: '10px auto',
-              display: 'block',
-              fontFamily: whimsicalFont,
-            }}
-          />
-
-          <button
-            onClick={handleFavoriteSubmit}
-            disabled={loading || !favoriteBook.trim()}
-            style={{
-              padding: '10px 20px',
-              fontSize: '1rem',
-              marginTop: '10px',
-              backgroundColor: '#17a2b8',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontFamily: whimsicalFont,
-            }}
-          >
-            {loading ? 'Fetching…' : 'Get 1 Recommendation'}
-          </button>
-
-          {fallbackRec && (
-            <div style={{ marginTop: '30px' }}>
-              <h3>Here’s a book you might enjoy:</h3>
-              <div
-                onClick={() => navigate(`/book/${fallbackRec.id}`)}
-                style={{
-                  width: '160px',
-                  margin: '0 auto',
-                  cursor: 'pointer',
-                  border: '1px solid #ddd',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  textAlign: 'center',
-                  fontFamily: whimsicalFont,
-                }}
-              >
-                <img
-                  src={fallbackRec.volumeInfo?.imageLinks?.thumbnail}
-                  alt={fallbackRec.volumeInfo?.title}
-                  style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
-                />
-                <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{fallbackRec.volumeInfo?.title}</p>
-                <p style={{ fontSize: '0.9rem', color: '#666' }}>
-                  {fallbackRec.volumeInfo?.authors?.join(', ')}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
-  );
+
+    {/* Recommendations section */}
+    {!showFallback && (
+      <>
+        <p style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#444' }}>
+          Based on your <strong>2 highest-rated books</strong> from recent reviews,<br />
+          here are <strong>5 AI-powered recommendations</strong> just for you.
+        </p>
+
+        <button
+          onClick={fetchRecommendations}
+          disabled={loading}
+          style={{
+            padding: '12px 25px',
+            fontSize: '1.1rem',
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            marginBottom: '30px',
+          }}
+        >
+          {loading ? 'Fetching…' : 'Get Recommendations'}
+        </button>
+
+        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
+          {recommendations.map(book => (
+            <div
+              key={book.id}
+              onClick={() => navigate(`/book/${book.id}`)}
+              style={{
+                width: '160px',
+                cursor: 'pointer',
+                border: '1px solid #ddd',
+                padding: '10px',
+                borderRadius: '6px',
+                textAlign: 'center',
+              }}
+            >
+              <img
+                src={book.volumeInfo?.imageLinks?.thumbnail}
+                alt={book.volumeInfo?.title}
+                style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
+              />
+              <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{book.volumeInfo?.title}</p>
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>{book.volumeInfo?.authors?.join(', ')}</p>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+
+    {/* Fallback section */}
+    {showFallback && (
+      <div style={{ marginTop: '30px' }}>
+        <p style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '10px' }}>
+          Uh-oh! You need to leave at least 2 reviews so we can understand your taste.
+        </p>
+        <p style={{ fontSize: '1.2rem', marginBottom: '20px' }}>
+          But don’t worry, you can either < br/>Come back after leaving 2 or more reviews
+          < br/>
+        < br/>OR
+        < br/>
+        < br/>you enter your favorite book below and I’ll give you ONE recommendation!
+        </p>
+
+        <input
+          type="text"
+          placeholder="Enter your favorite book"
+          value={favoriteBook}
+          onChange={e => setFavoriteBook(e.target.value)}
+          style={{
+            fontSize: '1.1rem',
+            padding: '10px',
+            width: '60%',
+            margin: '10px auto',
+            display: 'block',
+          }}
+        />
+
+        <button
+          onClick={handleFavoriteSubmit}
+          disabled={loading || !favoriteBook.trim()}
+          style={{
+            padding: '10px 20px',
+            fontSize: '1rem',
+            marginTop: '10px',
+            backgroundColor: '#17a2b8',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+        >
+          {loading ? 'Fetching…' : 'Get 1 Recommendation'}
+        </button>
+
+        {fallbackRec && (
+          <div style={{ marginTop: '30px' }}>
+            <h3>Here’s a book you might enjoy:</h3>
+            <div
+              onClick={() => navigate(`/book/${fallbackRec.id}`)}
+              style={{
+                width: '160px',
+                margin: '0 auto',
+                cursor: 'pointer',
+                border: '1px solid #ddd',
+                padding: '10px',
+                borderRadius: '6px',
+                textAlign: 'center',
+              }}
+            >
+              <img
+                src={fallbackRec.volumeInfo?.imageLinks?.thumbnail}
+                alt={fallbackRec.volumeInfo?.title}
+                style={{ width: '100%', height: 'auto', marginBottom: '10px' }}
+              />
+              <p style={{ fontWeight: 'bold', fontSize: '1rem' }}>{fallbackRec.volumeInfo?.title}</p>
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                {fallbackRec.volumeInfo?.authors?.join(', ')}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+);
+
 }
