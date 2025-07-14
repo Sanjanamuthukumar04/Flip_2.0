@@ -102,13 +102,13 @@ export default function HomePage() {
         <h1 style={styles.title}>Welcome to Flip!</h1>
 
         <div style={styles.searchInline}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search books..."
-            style={styles.inputLarge}
-          />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search books..."
+          style={styles.inputLarge}
+        />
           <button onClick={handleSearch} style={styles.buttonSmall}>
             Search
           </button>
@@ -151,10 +151,8 @@ export default function HomePage() {
               marginTop: '30px'
             }}
           >
-            <span style={{ fontSize: '25px' }}>
-              Get personalized book recommendations
-              <br /> with <span style={{ fontSize: '25px' }}>Flipper</span>, our AI pal!
-            </span>
+            <span  style={{fontSize:'30px'}}> Get personalized book recommendations
+            <br /> with <span style={{fontWeight: 'bold', fontSize:'30px' }}>Flipper</span>, our AI pal!</span>
           </button>
         </>
       )}
@@ -175,12 +173,10 @@ export default function HomePage() {
   );
 }
 
-const whimsicalFont = `"Roberto", cursive`;
-
 const styles = {
   container: {
+    padding: '20px',
     textAlign: 'center',
-    fontFamily: whimsicalFont,
   },
   header: {
     display: 'flex',
@@ -188,17 +184,14 @@ const styles = {
     alignItems: 'center',
     marginBottom: '20px',
     gap: '10px',
-    fontFamily: whimsicalFont,
   },
   title: {
     fontSize: '2rem',
-    fontFamily: whimsicalFont,
   },
   searchInline: {
     display: 'flex',
     alignItems: 'center',
-    gap: '25px',
-    fontFamily: whimsicalFont,
+    gap: '10px',
   },
   inputLarge: {
     padding: '10px',
@@ -206,7 +199,6 @@ const styles = {
     width: '400px',
     borderRadius: '4px',
     border: '1px solid #ccc',
-    fontFamily: whimsicalFont,
   },
   buttonSmall: {
     padding: '8px 12px',
@@ -216,7 +208,6 @@ const styles = {
     backgroundColor: '#007bff',
     color: '#fff',
     cursor: 'pointer',
-    fontFamily: whimsicalFont,
   },
   accountButton: {
     padding: '8px 15px',
@@ -226,14 +217,12 @@ const styles = {
     backgroundColor: '#28a745',
     color: '#fff',
     cursor: 'pointer',
-    fontFamily: whimsicalFont,
   },
   buttonsGroup: {
     display: 'flex',
     justifyContent: 'center',
     gap: '10px',
     margin: '20px 0',
-    fontFamily: whimsicalFont,
   },
   button: {
     padding: '10px 20px',
@@ -243,12 +232,10 @@ const styles = {
     backgroundColor: '#007bff',
     color: '#fff',
     cursor: 'pointer',
-    fontFamily: whimsicalFont,
   },
   sectionTitle: {
     marginTop: '30px',
     fontSize: '2rem',
-    fontFamily: whimsicalFont,
   },
   booksGrid: {
     marginTop: '20px',
@@ -256,7 +243,6 @@ const styles = {
     justifyContent: 'center',
     flexWrap: 'wrap',
     gap: '20px',
-    fontFamily: whimsicalFont,
   },
   bookCard: {
     cursor: 'pointer',
@@ -264,6 +250,5 @@ const styles = {
     padding: '10px',
     width: '150px',
     textAlign: 'center',
-    fontFamily: whimsicalFont,
   },
-};
+};  
