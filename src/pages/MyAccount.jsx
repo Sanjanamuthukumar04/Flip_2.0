@@ -10,8 +10,6 @@ export default function MyAccount() {
   const [updating, setUpdating] = useState(false);
   const navigate = useNavigate();
 
-  const whimsicalFont = `"Gloria Hallelujah", cursive`;
-
   useEffect(() => {
     fetchUser();
   }, []);
@@ -80,37 +78,41 @@ export default function MyAccount() {
     setLoading(false);
   };
 
-  const handleUpdateUsername = async () => {
-    if (!username.trim()) {
-      alert("Username cannot be empty");
-      return;
+const handleUpdateUsername = async () => {
+  if (!username.trim()) {
+    alert("Username cannot be empty");
+    return;
+  }
+  if (!user || !user.email) return;
+
+  setUpdating(true);
+  try {
+    // Update using email as the matching condition
+    const { data, error } = await supabase
+      .from("users")
+      .update({ username })
+      .eq("email", user.email)  // Changed from id to email
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
     }
-    if (!user || !user.email) return;
 
-    setUpdating(true);
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .update({ username })
-        .eq("email", user.email)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      if (data) {
-        alert("Username updated successfully!");
-        setUsername(data.username);
-      } else {
-        throw new Error("Update completed but no data returned");
-      }
-    } catch (error) {
-      console.error("Update error:", error);
-      alert(`Failed to update username: ${error.message}`);
-    } finally {
-      setUpdating(false);
+    if (data) {
+      alert("Username updated successfully!");
+      setUsername(data.username);
+      console.log("Updated user:", data);
+    } else {
+      throw new Error("Update completed but no data returned");
     }
-  };
+  } catch (error) {
+    console.error("Update error:", error);
+    alert(`Failed to update username: ${error.message}`);
+  } finally {
+    setUpdating(false);
+  }
+};
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -138,10 +140,10 @@ export default function MyAccount() {
     fetchReviews(user.email);
   };
 
-  if (loading) return <p style={{ fontFamily: whimsicalFont }}>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
 
   return (
-    <div style={{ ...styles.container, fontFamily: whimsicalFont }}>
+    <div style={styles.container}>
       <div style={styles.header}>
         <h1>My Account</h1>
         <button
@@ -215,6 +217,7 @@ const styles = {
     padding: "20px",
     maxWidth: "600px",
     margin: "0 auto",
+    fontFamily: "sans-serif",
   },
   header: {
     display: "flex",
