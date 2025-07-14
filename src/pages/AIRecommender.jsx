@@ -258,7 +258,7 @@ return (
           Uh-oh! You need to leave at least 2 reviews so we can understand your taste.
         </p>
         <p style={{ fontSize: '1rem', marginBottom: '20px' }}>
-          But don’t worry — enter your favorite book below and I’ll give you ONE recommendation!
+          But don’t worry — You can either < br/>Come back after reviewing 2 or more books < br/> OR < br/> Enter your favorite book below and I’ll give you 1 recommendation!
         </p>
 
         <input
