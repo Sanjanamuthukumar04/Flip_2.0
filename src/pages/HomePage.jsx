@@ -97,55 +97,46 @@ export default function HomePage() {
 
   return (
     <div style={styles.container}>
-      {/* Header row */}
       <div style={styles.header}>
         <h1 style={styles.title}>Welcome to Flip!</h1>
 
-        <div style={styles.headerRight}>
-          <div style={styles.searchInline}>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search books..."
-              style={styles.input}
-            />
-            <button onClick={handleSearch} style={styles.buttonSmall}>
-              Search
-            </button>
-          </div>
+        <div style={styles.headerControls}>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search books..."
+            style={styles.input}
+          />
 
-          <button onClick={() => navigate('/account')} style={styles.accountButton}>
-            My Account
+          <button onClick={handleSearch} style={styles.iconButton}>
+            <img src="/pics/search.png" alt="Search" style={{ width: '45px', height: '45px' }} />
+          </button>
+
+          <button onClick={() => navigate('/account')} style={styles.iconButtonAccount}>
+            <img src="/pics/my account.jpg" alt="My Account" style={{ width: '55px', height: '40px' }} />
           </button>
         </div>
       </div>
 
       {showSearchResults && (
-  <div style={styles.buttonsGroup}>
-    <button
-      onClick={handleClearSearch}
-      style={{ ...styles.button, backgroundColor: '#6c757d' }}
-    >
-      Clear
-    </button>
-  </div>
-)}
-
+        <div style={styles.buttonsGroup}>
+          <button
+            onClick={handleClearSearch}
+            style={{ ...styles.button, backgroundColor: '#6c757d' }}
+          >
+            Clear
+          </button>
+        </div>
+      )}
 
       {!showSearchResults && (
         <>
           <h2 style={styles.sectionTitle}>Top Reviewed Books</h2>
-          <div style={styles.booksGrid}>
-            {topBooks.map(renderBookCard)}
-          </div>
+          <div style={styles.booksGrid}>{topBooks.map(renderBookCard)}</div>
           <button
             onClick={() => navigate('/recommendations')}
-            style={{
-              ...styles.button,
-              backgroundColor: '#007bff',
-              marginTop: '30px'
-            }}
+            style={{ ...styles.button, backgroundColor: '#007bff', marginTop: '30px' }}
           >
             <span style={{ fontSize: '1.2rem' }}>
               Get personalized book recommendations
@@ -161,9 +152,7 @@ export default function HomePage() {
           {noResults ? (
             <p>No books found for “{searchQuery}”.</p>
           ) : (
-            <div style={styles.booksGrid}>
-              {searchResults.map(renderBookCard)}
-            </div>
+            <div style={styles.booksGrid}>{searchResults.map(renderBookCard)}</div>
           )}
         </>
       )}
@@ -182,22 +171,16 @@ const styles = {
     gap: '10px',
     marginBottom: '20px',
   },
-  headerRight: {
+  headerControls: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: '10px',
+    gap: '5px',
   },
   title: {
     fontSize: '2rem',
     marginBottom: '10px',
-  },
-  searchInline: {
-    display: 'flex',
-    gap: '5px',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
   },
   input: {
     padding: '8px',
@@ -207,24 +190,25 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
   },
-  buttonSmall: {
-    padding: '8px 12px',
-    fontSize: '1rem',
-    borderRadius: '4px',
-    border: 'none',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    cursor: 'pointer',
-  },
-  accountButton: {
-    padding: '8px 12px',
-    fontSize: '1rem',
-    borderRadius: '4px',
-    border: 'none',
-    backgroundColor: '#28a745',
-    color: '#fff',
-    cursor: 'pointer',
-  },
+  iconButton: {
+  backgroundColor: 'white',
+  border: 'none',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  marginLeft: '-5px', // make it visually stick to input
+},
+
+iconButtonAccount: {
+  backgroundColor: 'white',
+  borderRadius: '4px',
+  border: 'none',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  marginLeft: '4px', // slightly closer to search icon
+  padding: '4px',
+},
   buttonsGroup: {
     display: 'flex',
     justifyContent: 'center',
