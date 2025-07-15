@@ -78,40 +78,65 @@ export default function MyAccount() {
     setLoading(false);
   };
 
-  const handleUpdateUsername = async () => {
-    const newUsername = username.trim();
-    if (!newUsername) {
-      alert("Username cannot be empty.");
+const handleUpdateUsername = async () => {
+  const newUsername = username.trim();
+  if (!newUsername) {
+    alert("Username cannot be empty.");
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
+    alert("Username can only contain letters, numbers, and underscores.");
+    return;
+  }
+
+  if (!user) return;
+
+  setUpdating(true);
+  try {
+    // fetch all usernames (case-insensitive check)
+    const { data: existingUsers, error: fetchError } = await supabase
+      .from("users")
+      .select("username");
+
+    if (fetchError) {
+      console.error("Failed to fetch usernames:", fetchError);
+      alert("Something went wrong checking usernames.");
+      setUpdating(false);
       return;
     }
-    if (!user) return;
 
-    setUpdating(true);
-    try {
-      const { error } = await supabase
-        .from("users")
-        .update({ username: newUsername })
-        .eq("id", user.id);
+    const taken = existingUsers.some(
+      (u) => u.username.toLowerCase() === newUsername.toLowerCase()
+    );
 
-      if (error) {
-        if (
-          error.message.includes("duplicate key value") ||
-          error.message.toLowerCase().includes("unique")
-        ) {
-          alert("Username already taken. Please choose another.");
-        } else {
-          alert(`Failed to update username: ${error.message}`);
-        }
-        return;
-      }
-
-      alert("Username updated successfully!");
-    } catch (err) {
-      alert(`Unexpected error: ${err.message}`);
-    } finally {
+    if (taken) {
+      alert(
+        "Username already taken (case-insensitive). Please choose another."
+      );
       setUpdating(false);
+      return;
     }
-  };
+
+    const { error } = await supabase
+      .from("users")
+      .update({ username: newUsername })
+      .eq("id", user.id);
+
+    if (error) {
+      alert(`Failed to update username: ${error.message}`);
+      return;
+    }
+
+    alert("Username updated successfully!");
+  } catch (err) {
+    alert(`Unexpected error: ${err.message}`);
+  } finally {
+    setUpdating(false);
+  }
+};
+
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
