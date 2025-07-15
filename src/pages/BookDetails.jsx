@@ -10,20 +10,33 @@ export default function BookDetails() {
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentUsername, setCurrentUsername] = useState(null);
 
   useEffect(() => {
     (async () => {
       const { data } = await supabase.auth.getUser();
+      if (!data.user) return;
       setCurrentUser(data.user);
+
+      // fetch the logged-in user's username
+      const { data: userData, error } = await supabase
+        .from('users')
+        .select('username')
+        .eq('id', data.user.id)
+        .single();
+
+      if (!error && userData) {
+        setCurrentUsername(userData.username);
+      }
     })();
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && currentUsername) {
       fetchBookDetails();
       loadReviews();
     }
-  }, [id, currentUser]);
+  }, [id, currentUser, currentUsername]);
 
   const fetchBookDetails = async () => {
     const res = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
@@ -35,7 +48,8 @@ export default function BookDetails() {
     const { data, error } = await supabase
       .from('public_reviews_with_username')
       .select('*')
-      .eq('book_id', id);
+      .eq('book_id', id)
+      .order('created_at', { ascending: false });
 
     if (error) {
       console.error(error);
@@ -43,8 +57,8 @@ export default function BookDetails() {
     }
 
     const sorted = [...data].sort((a, b) => {
-      if (a.user_email === currentUser.email) return -1;
-      if (b.user_email === currentUser.email) return 1;
+      if (a.username === currentUsername) return -1;
+      if (b.username === currentUsername) return 1;
       return new Date(b.created_at) - new Date(a.created_at);
     });
 
@@ -54,7 +68,9 @@ export default function BookDetails() {
   const handleAddReview = async (newReview) => {
     if (!currentUser) return alert('Login to leave a review.');
 
-    const existing = reviews.find(r => r.user_email === currentUser.email);
+    const existing = reviews.find(
+      r => r.username === currentUsername
+    );
     if (existing) return alert('You can only leave one review.');
 
     const { error } = await supabase.from('reviews').insert([{
@@ -72,22 +88,22 @@ export default function BookDetails() {
     }
   };
 
-  const handleDeleteReview = async (reviewId) => {
-    if (!currentUser) return;
+const handleDeleteReview = async (reviewId) => {
+  if (!currentUser) return;
 
-    const { error } = await supabase
-      .from('reviews')
-      .delete()
-      .eq('id', reviewId)
-      .eq('user_email', currentUser.email);
+  const { error } = await supabase
+    .from('reviews')
+    .delete()
+    .eq('id', reviewId);
 
-    if (error) {
-      console.error(error);
-      alert('Failed to delete review.');
-    } else {
-      loadReviews();
-    }
-  };
+  if (error) {
+    console.error(error);
+    alert('Failed to delete review.');
+  } else {
+    loadReviews();
+  }
+};
+
 
   if (!book) return <p>Loading book details...</p>;
 
@@ -139,7 +155,8 @@ export default function BookDetails() {
       <ReviewList
         reviews={reviews.map(r => ({
           ...r,
-          canDelete: currentUser && r.user_email === currentUser.email,
+          username: r.username === currentUsername ? `${r.username}` : r.username,
+          canDelete: currentUsername && r.username.startsWith(currentUsername),
           rating: r.rating || 0
         }))}
         onDelete={handleDeleteReview}
