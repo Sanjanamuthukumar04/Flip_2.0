@@ -174,7 +174,7 @@ const handleUpdateUsername = async () => {
           <img
             src="/pics/home.webp"
             alt="home"
-            style={{ width: "55px", height: "50px" }}
+            style={{ width: "50px", height: "50px" }}
           />
         </button>
       </div>
