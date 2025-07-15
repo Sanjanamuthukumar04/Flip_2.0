@@ -78,52 +78,40 @@ export default function MyAccount() {
     setLoading(false);
   };
 
-const handleUpdateUsername = async () => {
-  const newUsername = username.trim();
-  if (!newUsername) {
-    alert("Username cannot be empty");
-    return;
-  }
-  if (!user) return;
-
-  setUpdating(true);
-  try {
-    // Check if username already exists (case-insensitive)
-    const { data: existing, error: checkError } = await supabase
-      .from("users")
-      .select("id, username");
-
-    if (checkError) throw checkError;
-
-    const duplicate = existing.find(
-      (u) => u.id !== user.id && u.username.toLowerCase() === newUsername.toLowerCase()
-    );
-
-    if (duplicate) {
-      alert("Username already taken (case-insensitive). Please choose another.");
-      setUpdating(false);
+  const handleUpdateUsername = async () => {
+    const newUsername = username.trim();
+    if (!newUsername) {
+      alert("Username cannot be empty.");
       return;
     }
+    if (!user) return;
 
-    const { data, error } = await supabase
-      .from("users")
-      .update({ username: newUsername })
-      .eq("id", user.id)
-      .select()
-      .single();
+    setUpdating(true);
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({ username: newUsername })
+        .eq("id", user.id);
 
-    if (error) throw error;
+      if (error) {
+        if (
+          error.message.includes("duplicate key value") ||
+          error.message.toLowerCase().includes("unique")
+        ) {
+          alert("Username already taken. Please choose another.");
+        } else {
+          alert(`Failed to update username: ${error.message}`);
+        }
+        return;
+      }
 
-    alert("Username updated successfully!");
-    setUsername(data.username);
-  } catch (error) {
-    console.error("Update error:", error);
-    alert(`Failed to update username: ${error.message}`);
-  } finally {
-    setUpdating(false);
-  }
-};
-
+      alert("Username updated successfully!");
+    } catch (err) {
+      alert(`Unexpected error: ${err.message}`);
+    } finally {
+      setUpdating(false);
+    }
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -131,10 +119,10 @@ const handleUpdateUsername = async () => {
   };
 
   const handleDeleteReviews = async () => {
-    const confirm = window.confirm(
+    const confirmDelete = window.confirm(
       "Are you sure? This will permanently delete all your reviews."
     );
-    if (!confirm) return;
+    if (!confirmDelete) return;
 
     const { error } = await supabase
       .from("reviews")
@@ -158,7 +146,11 @@ const handleUpdateUsername = async () => {
       <div style={styles.header}>
         <h1>My Account</h1>
         <button onClick={() => navigate("/home")} style={styles.iconButton}>
-          <img src="/pics/home.webp" alt="home" style={{ width: "55px", height: "50px" }} />
+          <img
+            src="/pics/home.webp"
+            alt="home"
+            style={{ width: "55px", height: "50px" }}
+          />
         </button>
       </div>
 
