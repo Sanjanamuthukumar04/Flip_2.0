@@ -31,7 +31,7 @@ export default function MyAccount() {
       .from("users")
       .select("id")
       .eq("id", user.id);
-    
+
     if (error) {
       console.error("Error checking user:", error);
       return;
@@ -55,7 +55,7 @@ export default function MyAccount() {
       .select("username")
       .eq("id", id)
       .single();
-    
+
     if (error) {
       console.error("Error fetching username:", error);
       return;
@@ -79,33 +79,43 @@ export default function MyAccount() {
   };
 
 const handleUpdateUsername = async () => {
-  if (!username.trim()) {
+  const newUsername = username.trim();
+  if (!newUsername) {
     alert("Username cannot be empty");
     return;
   }
-  if (!user || !user.email) return;
+  if (!user) return;
 
   setUpdating(true);
   try {
-    // Update using email as the matching condition
+    // Check if username already exists (case-insensitive)
+    const { data: existing, error: checkError } = await supabase
+      .from("users")
+      .select("id, username");
+
+    if (checkError) throw checkError;
+
+    const duplicate = existing.find(
+      (u) => u.id !== user.id && u.username.toLowerCase() === newUsername.toLowerCase()
+    );
+
+    if (duplicate) {
+      alert("Username already taken (case-insensitive). Please choose another.");
+      setUpdating(false);
+      return;
+    }
+
     const { data, error } = await supabase
       .from("users")
-      .update({ username })
-      .eq("email", user.email)  // Changed from id to email
+      .update({ username: newUsername })
+      .eq("id", user.id)
       .select()
       .single();
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
-    if (data) {
-      alert("Username updated successfully!");
-      setUsername(data.username);
-      console.log("Updated user:", data);
-    } else {
-      throw new Error("Update completed but no data returned");
-    }
+    alert("Username updated successfully!");
+    setUsername(data.username);
   } catch (error) {
     console.error("Update error:", error);
     alert(`Failed to update username: ${error.message}`);
@@ -113,6 +123,7 @@ const handleUpdateUsername = async () => {
     setUpdating(false);
   }
 };
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -129,7 +140,7 @@ const handleUpdateUsername = async () => {
       .from("reviews")
       .delete()
       .eq("user_email", user.email);
-    
+
     if (error) {
       alert("Failed to delete reviews.");
       console.error("Delete error:", error);
@@ -147,23 +158,23 @@ const handleUpdateUsername = async () => {
       <div style={styles.header}>
         <h1>My Account</h1>
         <button onClick={() => navigate("/home")} style={styles.iconButton}>
-            <img src="/pics/home.webp" alt="home" style={{ width: '55px', height: '50px' }} />
-          </button>
+          <img src="/pics/home.webp" alt="home" style={{ width: "55px", height: "50px" }} />
+        </button>
       </div>
 
       <div style={styles.section}>
         <h2>Username</h2>
         <p>Current username: {username}</p>
         <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        style={styles.input}
-        placeholder="Enter new username"
-        maxLength={20}
-      />
-        <button 
-          onClick={handleUpdateUsername} 
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={styles.input}
+          placeholder="Enter new username"
+          maxLength={20}
+        />
+        <button
+          onClick={handleUpdateUsername}
           style={styles.button}
           disabled={updating}
         >
@@ -209,7 +220,6 @@ const handleUpdateUsername = async () => {
   );
 }
 
-
 const styles = {
   container: {
     padding: "20px",
@@ -218,13 +228,13 @@ const styles = {
     fontFamily: "sans-serif",
   },
   iconButton: {
-    backgroundColor:'white',
-    borderRadius: '50px',
-    border: 'none',
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-},
+    backgroundColor: "white",
+    borderRadius: "50px",
+    border: "none",
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+  },
   header: {
     display: "flex",
     justifyContent: "space-between",
