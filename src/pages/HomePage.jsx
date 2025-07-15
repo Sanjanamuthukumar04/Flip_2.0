@@ -173,7 +173,7 @@ const styles = {
   },
   headerControls: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
     justifyContent: 'center',
     alignItems: 'center',
     gap: '5px',
@@ -185,30 +185,29 @@ const styles = {
   input: {
     padding: '8px',
     fontSize: '1rem',
-    width: '250px',
-    maxWidth: '90%',
+    width: '200px',
+    maxWidth: '60%',
     borderRadius: '4px',
     border: '1px solid #ccc',
   },
   iconButton: {
-  backgroundColor: 'white',
-  border: 'none',
-  cursor: 'pointer',
-  display: 'inline-flex',
-  alignItems: 'center',
-  marginLeft: '-5px', // make it visually stick to input
-},
-
-iconButtonAccount: {
-  backgroundColor: 'white',
-  borderRadius: '4px',
-  border: 'none',
-  cursor: 'pointer',
-  display: 'inline-flex',
-  alignItems: 'center',
-  marginLeft: '4px', // slightly closer to search icon
-  padding: '4px',
-},
+    backgroundColor: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    marginLeft: '-5px',
+  },
+  iconButtonAccount: {
+    backgroundColor: 'white',
+    borderRadius: '4px',
+    border: 'none',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    marginLeft: '4px',
+    padding: '4px',
+  },
   buttonsGroup: {
     display: 'flex',
     justifyContent: 'center',
