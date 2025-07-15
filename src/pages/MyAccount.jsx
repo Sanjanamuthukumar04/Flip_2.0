@@ -169,7 +169,7 @@ const handleUpdateUsername = async () => {
           style={styles.button}
           disabled={updating}
         >
-          {updating ? "Updating..." : "Update Username"}
+          {updating ? "Updating..." : "Update"}
         </button>
       </div>
 
