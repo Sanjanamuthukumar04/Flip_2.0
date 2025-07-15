@@ -146,30 +146,28 @@ const handleUpdateUsername = async () => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1>My Account</h1>
-        <button
-          onClick={() => navigate("/home")}
-          style={{ ...styles.button, backgroundColor: "#28a745" }}
-        >
-          Return Home
-        </button>
+        <button onClick={() => navigate("/home")} style={styles.iconButton}>
+            <img src="/pics/home.webp" alt="home" style={{ width: '55px', height: '50px' }} />
+          </button>
       </div>
 
       <div style={styles.section}>
         <h2>Username</h2>
         <p>Current username: {username}</p>
         <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={styles.input}
-          placeholder="Enter new username"
-        />
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        style={styles.input}
+        placeholder="Enter new username"
+        maxLength={20}
+      />
         <button 
           onClick={handleUpdateUsername} 
           style={styles.button}
           disabled={updating}
         >
-          {updating ? "Updating..." : "Update"}
+          {updating ? "Updating..." : "Update Username"}
         </button>
       </div>
 
@@ -219,6 +217,14 @@ const styles = {
     margin: "0 auto",
     fontFamily: "sans-serif",
   },
+  iconButton: {
+    backgroundColor:'white',
+    borderRadius: '50px',
+    border: 'none',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+},
   header: {
     display: "flex",
     justifyContent: "space-between",
