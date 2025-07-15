@@ -10,7 +10,6 @@ export default function BookDetails() {
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  const [userProfiles, setUserProfiles] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -32,24 +31,9 @@ export default function BookDetails() {
     setBook(data);
   };
 
-  const fetchUserProfiles = async (reviewEmails) => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('email, username')
-      .in('email', reviewEmails);
-
-    if (!error && data) {
-      const profiles = {};
-      data.forEach(user => {
-        profiles[user.email] = user.username;
-      });
-      setUserProfiles(profiles);
-    }
-  };
-
   const loadReviews = async () => {
     const { data, error } = await supabase
-      .from('reviews')
+      .from('public_reviews_with_username')
       .select('*')
       .eq('book_id', id);
 
@@ -57,9 +41,6 @@ export default function BookDetails() {
       console.error(error);
       return;
     }
-
-    const reviewEmails = [...new Set(data.map(r => r.user_email))];
-    await fetchUserProfiles(reviewEmails);
 
     const sorted = [...data].sort((a, b) => {
       if (a.user_email === currentUser.email) return -1;
@@ -139,14 +120,14 @@ export default function BookDetails() {
         />
 
         <div style={{ maxWidth: '600px', textAlign: 'center' }}>
-  <Rating value={averageRating} count={reviews.length} />
-  <div
-    style={{ marginTop: '20px', lineHeight: '1.6', color: '#444', textAlign: 'left' }}
-    dangerouslySetInnerHTML={{
-      __html: info.description || 'No description available.',
-    }}
-  />
-</div>
+          <Rating value={averageRating} count={reviews.length} />
+          <div
+            style={{ marginTop: '20px', lineHeight: '1.6', color: '#444', textAlign: 'left' }}
+            dangerouslySetInnerHTML={{
+              __html: info.description || 'No description available.',
+            }}
+          />
+        </div>
       </div>
 
       <h2 style={{ marginTop: '40px', color: '#333' }}>Leave a Review</h2>
@@ -158,7 +139,6 @@ export default function BookDetails() {
       <ReviewList
         reviews={reviews.map(r => ({
           ...r,
-          username: userProfiles[r.user_email] || r.user_email.split('@')[0],
           canDelete: currentUser && r.user_email === currentUser.email,
           rating: r.rating || 0
         }))}
