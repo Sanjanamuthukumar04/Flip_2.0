@@ -88,35 +88,26 @@ export default function MyAccount() {
 
     setUpdating(true);
     try {
-      // Get all usernames
-      const { data: allUsers, error: fetchError } = await supabase
-        .from("users")
-        .select("id, username");
-
-      if (fetchError) throw fetchError;
-
-      const duplicate = allUsers.find(
-        (u) =>
-          u.id !== user.id &&
-          u.username.toLowerCase() === newUsername.toLowerCase()
-      );
-
-      if (duplicate) {
-        alert("That username is already taken. Please choose another.");
-        setUpdating(false);
-        return;
-      }
-
       const { error } = await supabase
         .from("users")
         .update({ username: newUsername })
         .eq("id", user.id);
 
-      if (error) throw error;
+      if (error) {
+        if (
+          error.message.includes("duplicate key value") ||
+          error.message.toLowerCase().includes("unique")
+        ) {
+          alert("Username already taken. Please choose another.");
+        } else {
+          alert(`Failed to update username: ${error.message}`);
+        }
+        return;
+      }
 
       alert("Username updated successfully!");
     } catch (err) {
-      alert(`Failed to update username: ${err.message}`);
+      alert(`Unexpected error: ${err.message}`);
     } finally {
       setUpdating(false);
     }
