@@ -114,7 +114,7 @@ export default function HomePage() {
           </button>
 
           <button onClick={() => navigate('/account')} style={styles.iconButtonAccount}>
-            <img src="/pics/my account.jpg" alt="My Account" style={{ width: '60px', height: '40px' }} />
+            <img src="/pics/my account.jpg" alt="My Account" style={{ width: '65px', height: '40px' }} />
           </button>
         </div>
       </div>
