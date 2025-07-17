@@ -18,7 +18,6 @@ export default function BookDetails() {
       if (!data.user) return;
       setCurrentUser(data.user);
 
-      // fetch the logged-in user's username
       const { data: userData, error } = await supabase
         .from('users')
         .select('username')
@@ -68,9 +67,7 @@ export default function BookDetails() {
   const handleAddReview = async (newReview) => {
     if (!currentUser) return alert('Login to leave a review.');
 
-    const existing = reviews.find(
-      r => r.username === currentUsername
-    );
+    const existing = reviews.find(r => r.username === currentUsername);
     if (existing) return alert('You can only leave one review.');
 
     const { error } = await supabase.from('reviews').insert([{
@@ -88,22 +85,21 @@ export default function BookDetails() {
     }
   };
 
-const handleDeleteReview = async (reviewId) => {
-  if (!currentUser) return;
+  const handleDeleteReview = async (reviewId) => {
+    if (!currentUser) return;
 
-  const { error } = await supabase
-    .from('reviews')
-    .delete()
-    .eq('id', reviewId);
+    const { error } = await supabase
+      .from('reviews')
+      .delete()
+      .eq('id', reviewId);
 
-  if (error) {
-    console.error(error);
-    alert('Failed to delete review.');
-  } else {
-    loadReviews();
-  }
-};
-
+    if (error) {
+      console.error(error);
+      alert('Failed to delete review.');
+    } else {
+      loadReviews();
+    }
+  };
 
   if (!book) return <p>Loading book details...</p>;
 
@@ -160,6 +156,7 @@ const handleDeleteReview = async (reviewId) => {
           rating: r.rating || 0
         }))}
         onDelete={handleDeleteReview}
+        preserveFormatting
       />
     </div>
   );
