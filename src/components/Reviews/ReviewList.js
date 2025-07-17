@@ -9,7 +9,7 @@ export default function ReviewList({ reviews, onDelete }) {
     <div>
       {reviews.map((review) => (
         <div
-          key={review.review_id} // updated
+          key={review.review_id}
           style={{
             border: "1px solid #ccc",
             padding: "10px",
@@ -26,11 +26,12 @@ export default function ReviewList({ reviews, onDelete }) {
             </strong>{" "}
             rated {review.rating}⭐
           </p>
-          <p>{review.content}</p>
+
+          <p style={{ whiteSpace: "pre-wrap" }}>{review.content}</p>
 
           {review.canDelete && (
             <button
-              onClick={() => onDelete(review.review_id)} // updated
+              onClick={() => onDelete(review.review_id)}
               style={{
                 backgroundColor: "red",
                 color: "white",
